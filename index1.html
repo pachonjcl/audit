@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://unpkg.com/d3-sankey@0.6"></script>
+<script>
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var formatNumber = d3.format(",.0f"),
+    format = function(d) { return formatNumber(d) + " TWh"; },
+    color = d3.scaleOrdinal(d3.schemeCategory10);
+
+var sankey = d3.sankey()
+    .nodeWidth(15)
+    .nodePadding(10)
+    .extent([[1, 1], [width - 1, height - 6]]);
+
+var link = svg.append("g")
+    .attr("class", "links")
+    .attr("fill", "none")
+    .attr("stroke", "#000")
+    .attr("stroke-opacity", 0.2)
+  .selectAll("path");
+
+var node = svg.append("g")
+    .attr("class", "nodes")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+  .selectAll("g");
+
+// d3.json("energy.json", function(error, energy) {
+//   if (error) throw error;
+
+var energy = {
+    "nodes": [
+        {
+            "name": "EDM"
+        },
+        {
+            "name": "APO"
+        },
+        {
+            "name": "BAI"
+        },
+        {
+            "name": "DSS"
+        },
+        {
+            "name": "MEA"
+        },
+        {
+            "name": "Politicas de seguridad"
+        },
+        {
+            "name": "Aspectos Organizativos"
+        },
+        {
+            "name": "Seguridad ligada a los Recursos Humanos"
+        },
+        {
+            "name": "Gestion de Activos"
+        },
+        {
+            "name": "Control de Accesos"
+        },
+        {
+            "name": "Control de Accesos"
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 5,
+            "value": 124.729
+        },
+        {
+            "source": 1,
+            "target": 6,
+            "value": 0.597
+        },
+        {
+            "source": 1,
+            "target": 5,
+            "value": 26.862
+        },
+        {
+            "source": 2,
+            "target": 9,
+            "value": 280.322
+        },
+        {
+            "source": 3,
+            "target": 5,
+            "value": 81.144
+        },
+        {
+            "source": 4,
+            "target": 8,
+            "value": 35
+        },
+        {
+            "source": 3,
+            "target": 10,
+            "value": 35
+        },
+        {
+            "source": 2,
+            "target": 9,
+            "value": 11.606
+        },
+        {
+            "source": 3,
+            "target": 6,
+            "value": 63.965
+        },
+        {
+            "source": 1,
+            "target": 10,
+            "value": 75.571
+        }
+    ]
+};
+
+  sankey(energy);
+
+  link = link
+    .data(energy.links)
+    .enter().append("path")
+      .attr("d", d3.sankeyLinkHorizontal())
+      .attr("stroke-width", function(d) { return Math.max(1, d.width); });
+
+  link.append("title")
+      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
+  node = node
+    .data(energy.nodes)
+    .enter().append("g");
+
+  node.append("rect")
+      .attr("x", function(d) { return d.x0; })
+      .attr("y", function(d) { return d.y0; })
+      .attr("height", function(d) { return d.y1 - d.y0; })
+      .attr("width", function(d) { return d.x1 - d.x0; })
+      .attr("fill", function(d) { return color(d.name.replace(/ .*/, "")); })
+      .attr("stroke", "#000");
+
+  node.append("text")
+      .attr("x", function(d) { return d.x0 - 6; })
+      .attr("y", function(d) { return (d.y1 + d.y0) / 2; })
+      .attr("dy", "0.35em")
+      .attr("text-anchor", "end")
+      .text(function(d) { return d.name; })
+    .filter(function(d) { return d.x0 < width / 2; })
+      .attr("x", function(d) { return d.x1 + 6; })
+      .attr("text-anchor", "start");
+
+  node.append("title")
+      .text(function(d) { return d.name + "\n" + format(d.value); });
+// });
+
+</script>
