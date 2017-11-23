@@ -7,24 +7,24 @@ var colorscale = d3.scale.category10();
 var LegendOptions = [
   // 'COBIT5',
   'ISO 27002',
-  'TOGAF'
+  'ITIL'
 ];
 
 //Data
 var d = [
   [
-    { axis: "EDM", value: 0.59 },
-    { axis: "APO", value: 0.42 },
-    { axis: "BAI", value: 0.56 },
-    { axis: "DSS", value: 0.34 },
-    { axis: "MEA", value: 0.48 },
+    { axis: "EDM", value: 3/5 },
+    { axis: "APO", value: 7/13 },
+    { axis: "BAI", value: 40/68 },
+    { axis: "DSS", value: 5/6 },
+    { axis: "MEA", value: 3/3 },
   ], 
   [
-    { axis: "EDM", value: 0.38 },
-    { axis: "APO", value: 0.31 },
-    { axis: "BAI", value: 0.12 },
-    { axis: "DSS", value: 0.18 },
-    { axis: "MEA", value: 0.26 },
+    { axis: "EDM", value: 3/5 },
+    { axis: "APO", value: 10/13 },
+    { axis: "BAI", value: 12/27 },
+    { axis: "DSS", value: 1/1 },
+    { axis: "MEA", value: 1/1 },
   ]
 ];
 
@@ -59,7 +59,7 @@ var text = svg.append("text")
   .attr("y", 10)
   .attr("font-size", "12px")
   .attr("fill", "#404040")
-  .text("% de compatibilidad ISO 27002 con los dominios de COBIT5");
+  .text("% Cumplimiento con los dominios de COBIT5");
 
 //Initiate Legend	
 var legend = svg.append("g")
